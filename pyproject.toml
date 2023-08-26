@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "animebotaiogram"
+version = "0.1.0"
+description = ""
+authors = ["valerii-chirkov <valery.chirkov99@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+python-dotenv = "^1.0.0"
+aiogram = "3.0.0rc2"
+asyncpg = "^0.28.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
