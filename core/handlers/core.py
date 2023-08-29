@@ -19,7 +19,10 @@ async def get_search(message: Message, state: FSMContext):
 async def get_found_anime(message: Message, state: FSMContext):
     anime_found = get_list_of_anime_by_name(user_input=message.text)
     anime_titles = get_anime_titles(anime_found)
-    await message.answer(text="Вот что удалось найти:", reply_markup=get_anime_titles_keyboard(anime_titles))
+    if anime_titles:
+        await message.answer(text="Вот что удалось найти:", reply_markup=get_anime_titles_keyboard(anime_titles))
+    else:
+        await message.answer(text="<b>Ничего не найдено 😿</b>", parse_mode='HTML')
     await state.clear()
 
 
