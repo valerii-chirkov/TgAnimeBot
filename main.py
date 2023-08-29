@@ -1,6 +1,5 @@
 import logging
 
-import asyncpg
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
 import asyncio
@@ -9,11 +8,11 @@ from core.config import TOKEN, ADMIN_ID
 from core.handlers.basic import get_start, get_vlc, get_help, get_support
 from core.handlers.core import get_search, get_anime, get_found_anime, get_anime_title, get_anime_series
 from core.message_texts import *
-from core.middlewares.db_middleware import DbSession
+from core.middlewares.db_middleware import DbSessionMiddleware
 from core.utils.callback_data import CallbackAnimeSeries, CallbackAnimeTitle, CallbackSeriesKeyboard
 from core.utils.commands import set_commands
-from core.utils.db import create_pool
-from core.utils.states import StepsAnime, StepsAnimeTitle
+from core.db.database import SessionLocal, init_models
+from core.utils.states import StepsAnime
 
 
 async def start_bot(bot: Bot):
@@ -26,16 +25,18 @@ async def stop_bot(bot: Bot):
 
 
 async def start():
-    logging.basicConfig(level=logging.INFO,
+    logging.basicConfig(filename="logs/anime_logs",
+                        filemode='a',
+                        level=logging.INFO,
                         format="%(asctime)s - [%(levelname)s] - %(name)s - "
                                "(%(filename)s).%(funcName)s(%(lineno)d) - %(message)s")
-    pool_connect = await create_pool()
-    print("hi")
+
+    await init_models()
 
     bot = Bot(token=TOKEN)
     dp = Dispatcher()
 
-    dp.update.middleware.register(DbSession(pool_connect))
+    dp.update.middleware(DbSessionMiddleware(session_pool=SessionLocal))
 
     dp.startup.register(start_bot)
     dp.shutdown.register(stop_bot)
@@ -60,3 +61,4 @@ async def start():
 
 if __name__ == '__main__':
     asyncio.run(start())
+
