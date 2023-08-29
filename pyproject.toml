@@ -11,6 +11,9 @@ requests = "^2.31.0"
 python-dotenv = "^1.0.0"
 aiogram = "3.0.0rc2"
 asyncpg = "^0.28.0"
+sqlalchemy = "^2.0.20"
+greenlet = "^2.0.2"
+alembic = "^1.11.3"
 
 
 [build-system]
